@@ -105,7 +105,7 @@ variable "fabric_speed" {
   }
 }
 
-variable "fabric_purcharse_order_number" {
+variable "fabric_purchase_order_number" {
   type        = string
   description = "Connection's purchase order number to reflect on the invoice."
   default     = ""
@@ -153,11 +153,12 @@ variable "ibm_direct_link_bgp_cloud_peer_ip" {
 variable "ibm_api_key" {
   type = string
   description = <<EOF
-  The IBM Cloud platform API key. You must either add this variable or leave default "" and source
-  it from the IC_API_KEY (higher precedence) or IBMCLOUD_API_KEY environment variable. Even if you
-  using other authentication method for the ibm terraform provider, the key is required to approve
-  the gateway connection using IBM cloud go SDK. To create an API key, in the IBM Cloud console,
-  go to Manage > Access (IAM) > API keys.
+  The IBM Cloud platform API key. You must either add this variable or leave default "" and source it from the
+  IC_API_KEY (higher precedence) or IBMCLOUD_API_KEY environment variable.
+
+  NOTE: Even if you using other authentication method for the ibm terraform provider, the key (using the variable or
+  an environment variable) is required to approve the IBM Direct Link gateway connection using IBM cloud go SDK. To
+  create an API key, in the IBM Cloud console, go to Manage > Access (IAM) > API keys.
   EOF
   default = ""
 }

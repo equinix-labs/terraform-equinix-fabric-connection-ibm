@@ -1,6 +1,4 @@
 locals {
-  ibm_region = data.ibm_is_region.this.name
-
   ibm_dl_gateway = [
     for gw in data.ibm_dl_gateways.this.gateways: gw
     if gw.name == local.connection_name
@@ -40,12 +38,9 @@ resource "random_string" "this" {
   special = false
 }
 
-// ["au-syd","br-sao","ca-tor","eu-de","eu-gb","jp-osa","jp-tok","us-east","us-south"]
-data "ibm_is_region" "this" {}
-
 module "equinix-fabric-connection" {
   source = "equinix-labs/fabric-connection/equinix"
-  version = "0.2.0"
+  version = "0.3.1"
 
   depends_on = [
     null_resource.confirm_direct_link_gateway_deletion
@@ -70,7 +65,7 @@ module "equinix-fabric-connection" {
   service_token_id          = var.fabric_service_token_id
   speed                     = var.fabric_speed
   speed_unit                = "MB"
-  purcharse_order_number    = var.fabric_purcharse_order_number
+  purchase_order_number     = var.fabric_purchase_order_number
 
   additional_info = concat([
     {
