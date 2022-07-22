@@ -76,7 +76,6 @@ See <https://registry.terraform.io/modules/equinix-labs/fabric-connection-ibm/eq
 | [random_string.this](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [equinix-fabric-connection](https://registry.terraform.io/modules/equinix-labs/fabric-connection/equinix/latest) | module |
 | [equinix_network_bgp.this](https://registry.terraform.io/providers/equinix/equinix/latest/docs/resources/equinix_network_bgp) | resource |
-| [ibm_is_region.this](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_region) | data source |
 | [ibm_resource_group.this](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/resource_group) | data source |
 | [ibm_resource_group.this](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_group) | resource |
 | [ibm_dl_gateways.this](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/dl_gateways) | data source |
@@ -89,3 +88,4 @@ See <https://registry.terraform.io/modules/equinix-labs/fabric-connection-ibm/eq
 
 - [Fabric Port connection](https://registry.terraform.io/modules/equinix-labs/fabric-connection-ibm/equinix/latest/examples/fabric-port-connection/)
 - [Network Edge device connection](https://registry.terraform.io/modules/equinix-labs/fabric-connection-ibm/equinix/latest/examples/network-edge-device-connection/)
+- [Service Token (a-side) Equinix Metal to IBM redundant connection End-to-End Solution](https://registry.terraform.io/modules/equinix-labs/fabric-connection-ibm/equinix/latest/examples/service-token-metal-to-ibm-connection/)
