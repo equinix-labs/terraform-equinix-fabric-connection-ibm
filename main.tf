@@ -7,7 +7,7 @@ locals {
   ibm_dl_gateway_id = local.ibm_dl_gateway.id
 
   ibm_resource_group_name = coalesce(var.ibm_resource_group_name, format("rg-%s", random_string.this.result))
-  ibm_resource_group_id = var.ibm_create_resource_group ? ibm_resource_group.this[0].id : data.ibm_resource_group.this[0].id
+  ibm_resource_group_id   = var.ibm_create_resource_group ? ibm_resource_group.this[0].id : data.ibm_resource_group.this[0].id
 
   is_windows = substr(pathexpand("~"), 0, 1) == "/" ? false : true // if directories use "/" for root then OS linux based, otherwise set windows
   os         = data.external.os.result.os
@@ -17,7 +17,7 @@ locals {
 
 data "external" "os" {
   working_dir = "${path.module}/scripts/"
-  program = local.is_windows ? ["{\"os\": \"win\"}"] : ["/bin/bash", "check_linux_os.sh"]
+  program     = local.is_windows ? ["powershell", "check_win_os.ps1"] : ["/bin/bash", "check_linux_os.sh"]
 }
 
 data "ibm_resource_group" "this" {
@@ -29,8 +29,8 @@ data "ibm_resource_group" "this" {
 resource "ibm_resource_group" "this" {
   count = var.ibm_create_resource_group ? 1 : 0
 
-  name     = local.ibm_resource_group_name
-  tags     = var.ibm_tags
+  name = local.ibm_resource_group_name
+  tags = var.ibm_tags
 }
 
 resource "random_string" "this" {
@@ -39,7 +39,7 @@ resource "random_string" "this" {
 }
 
 module "equinix-fabric-connection" {
-  source = "equinix-labs/fabric-connection/equinix"
+  source  = "equinix-labs/fabric-connection/equinix"
   version = "0.3.1"
 
   depends_on = [
@@ -150,7 +150,7 @@ resource "equinix_network_bgp" "this" {
   local_asn          = local.ibm_dl_gateway.bgp_asn
   remote_ip_address  = split("/", local.ibm_dl_gateway.bgp_ibm_cidr)[0]
   remote_asn         = local.ibm_dl_gateway.bgp_ibm_asn
-  //TODO authentication_key
+  //TODO add authentication_key
 }
 
 resource "ibm_dl_virtual_connection" "this"{
@@ -160,8 +160,8 @@ resource "ibm_dl_virtual_connection" "this"{
     null_resource.confirm_direct_link_gateway_creation
   ]
 
-  gateway = local.ibm_dl_gateway_id
-  name = format("dl-vc-%s", random_string.this.result)
-  type = "vpc"
+  gateway    = local.ibm_dl_gateway_id
+  name       = format("dl-vc-%s", random_string.this.result)
+  type       = "vpc"
   network_id = var.ibm_vpc_id
 }
