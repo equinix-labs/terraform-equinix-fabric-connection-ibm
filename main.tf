@@ -16,10 +16,11 @@ locals {
 }
 
 data "external" "os" {
+  working_dir = "${abspath(path.module)}/scripts/"
   program = local.is_windows ? [
-      "powershell.exe", "${abspath(path.module)}/scripts/check_win_os.ps1"
+      "./check_win_os.ps1"
     ] : [
-      "/bin/bash", "${abspath(path.module)}/scripts/check_linux_os.sh"
+      "/bin/bash", "check_linux_os.sh"
     ]
 }
 
