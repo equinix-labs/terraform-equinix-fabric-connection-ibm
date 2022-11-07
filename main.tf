@@ -16,8 +16,11 @@ locals {
 }
 
 data "external" "os" {
-  working_dir = "${path.module}/scripts/"
-  program     = local.is_windows ? ["powershell", "check_win_os.ps1"] : ["/bin/bash", "check_linux_os.sh"]
+  program = local.is_windows ? [
+      "powershell.exe", "${abspath(path.module)}/scripts/check_win_os.ps1"
+    ] : [
+      "/bin/bash", "${abspath(path.module)}/scripts/check_linux_os.sh"
+    ]
 }
 
 data "ibm_resource_group" "this" {
