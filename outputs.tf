@@ -40,30 +40,30 @@ output "network_edge_bgp_provisioning_status" {
 
 output "ibm_direct_link_bgp_customer_peer_ip" {
   description = "BGP Peer ID for the router on the Equinix end of the BGP session."
-  value       =  local.ibm_dl_gateway.bgp_cer_cidr
+  value       = local.ibm_dl_gateway.bgp_cer_cidr
 }
 
 output "ibm_direct_link_bgp_customer_asn" {
   description = "The autonomous system (AS) number for Border Gateway Protocol (BGP) configuration on the Equinix end of the BGP session."
-  value       =  local.ibm_dl_gateway.bgp_asn
+  value       = local.ibm_dl_gateway.bgp_asn
 }
 
 output "ibm_direct_link_bgp_cloud_peer_ip" {
   description = "BGP Peer ID for the router on the IBM end of the BGP session."
-  value       =  local.ibm_dl_gateway.bgp_ibm_cidr
+  value       = local.ibm_dl_gateway.bgp_ibm_cidr
 }
 
 output "ibm_direct_link_bgp_cloud_asn" {
   description = "The autonomous system (AS) number for Border Gateway Protocol (BGP) configuration on the IBM end of the BGP session."
-  value       =  local.ibm_dl_gateway.bgp_ibm_asn
+  value       = local.ibm_dl_gateway.bgp_ibm_asn
 }
 
 output "ibm_dl_virtual_connection_id" {
   description = "The ID of the Virtual connection between the gateway and your VPC."
-  value       =  try(ibm_dl_virtual_connection.this[0].id, null)
+  value       = try(ibm_dl_virtual_connection.this[0].id, null)
 }
 
 output "ibm_dl_gateway_id" {
   description = "The ID of the Direct Link Gateway."
-  value       =  local.ibm_dl_gateway_id
+  value       = local.ibm_dl_gateway_id
 }
