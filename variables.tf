@@ -100,7 +100,7 @@ variable "fabric_speed" {
   default     = 0
 
   validation {
-    condition = contains([0, 50, 100, 200, 500, 1000, 2000, 5000], var.fabric_speed)
+    condition     = contains([0, 50, 100, 200, 500, 1000, 2000, 5000], var.fabric_speed)
     error_message = "Valid values are (0, 50, 100, 200, 500, 1000, 2000, 5000)."
   }
 }
@@ -112,7 +112,7 @@ variable "fabric_purchase_order_number" {
 }
 
 variable "ibm_account_id" {
-  type = string
+  type        = string
   description = <<EOF
   Your `IBM Cloud account ID`. Log in to the IBM Cloud console and select Manage > Account to
   locate your IBM account ID."
@@ -151,7 +151,7 @@ variable "ibm_direct_link_bgp_cloud_peer_ip" {
 }
 
 variable "ibm_api_key" {
-  type = string
+  type        = string
   description = <<EOF
   The IBM Cloud platform API key. You must either add this variable or leave default "" and source it from the
   IC_API_KEY (higher precedence) or IBMCLOUD_API_KEY environment variable.
@@ -160,7 +160,7 @@ variable "ibm_api_key" {
   an environment variable) is required to approve the IBM Direct Link gateway connection using IBM cloud go SDK. To
   create an API key, in the IBM Cloud console, go to Manage > Access (IAM) > API keys.
   EOF
-  default = ""
+  default     = ""
 }
 
 variable "ibm_dl_connection_mode" {
@@ -173,7 +173,7 @@ variable "ibm_dl_connection_mode" {
   default     = "direct"
 
   validation {
-    condition = (contains(["direct", "transit"], var.ibm_dl_connection_mode))
+    condition     = (contains(["direct", "transit"], var.ibm_dl_connection_mode))
     error_message = "Valid values are (direct, transit)."
   }
 }
@@ -187,7 +187,7 @@ variable "ibm_dl_routing_type" {
   default     = "local"
 
   validation {
-    condition = (contains(["local", "global"], var.ibm_dl_routing_type))
+    condition     = (contains(["local", "global"], var.ibm_dl_routing_type))
     error_message = "Valid values are (local, global)."
   }
 }
@@ -201,7 +201,7 @@ variable "ibm_dl_billing_type" {
   default     = "metered"
 
   validation {
-    condition = (contains(["metered", "unmetered"], var.ibm_dl_billing_type))
+    condition     = (contains(["metered", "unmetered"], var.ibm_dl_billing_type))
     error_message = "Valid values are (metered, unmetered)."
   }
 }
@@ -225,16 +225,16 @@ variable "ibm_tags" {
   type        = list(string)
   description = "Tags for IBM Cloud resources."
 
-  default = [ "Terraformed" ]
+  default = ["Terraformed"]
 }
 
 variable "ibm_create_dl_virtual_connection" {
-  type = bool
+  type        = bool
   description = <<EOF
   Whether to connect the Direct Link gateway with an existing VPC. If true, 'ibm_vpc_id' must be
   provided and 'ibm_dl_connection_mode' must be set to 'direct'.
   EOF
-  default = false
+  default     = false
 }
 
 variable "ibm_vpc_id" {

@@ -1,6 +1,6 @@
 locals {
   ibm_dl_gateway = [
-    for gw in data.ibm_dl_gateways.this.gateways: gw
+    for gw in data.ibm_dl_gateways.this.gateways : gw
     if gw.name == local.connection_name
   ][0]
 
@@ -42,7 +42,7 @@ resource "random_string" "this" {
 
 module "equinix-fabric-connection" {
   source  = "equinix-labs/fabric-connection/equinix"
-  version = "0.3.1"
+  version = "0.4.0"
 
   depends_on = [
     null_resource.confirm_direct_link_gateway_deletion
@@ -54,11 +54,11 @@ module "equinix-fabric-connection" {
   # optional variables
   name = local.connection_name
 
-  seller_profile_name       = "IBM Cloud Direct Link 2"
-  seller_metro_code         = var.fabric_destination_metro_code
-  seller_metro_name         = var.fabric_destination_metro_name
+  seller_profile_name = "IBM Cloud Direct Link 2"
+  seller_metro_code   = var.fabric_destination_metro_code
+  seller_metro_name   = var.fabric_destination_metro_name
 
-  seller_authorization_key  = var.ibm_account_id
+  seller_authorization_key = var.ibm_account_id
 
   network_edge_id           = var.network_edge_device_id
   network_edge_interface_id = var.network_edge_device_interface_id
@@ -74,13 +74,13 @@ module "equinix-fabric-connection" {
       name  = "ASN"
       value = var.ibm_direct_link_bgp_customer_asn
     }
-  ], var.ibm_direct_link_bgp_customer_peer_ip != "" ? [
+    ], var.ibm_direct_link_bgp_customer_peer_ip != "" ? [
     {
-      name = "CER IPv4 CIDR"
+      name  = "CER IPv4 CIDR"
       value = var.ibm_direct_link_bgp_customer_peer_ip
     },
     {
-      name = "IBM IPv4 CIDR"
+      name  = "IBM IPv4 CIDR"
       value = format("%s/%s", var.ibm_direct_link_bgp_cloud_peer_ip, split("/", var.ibm_direct_link_bgp_customer_peer_ip)[1])
     }
   ] : [])
@@ -104,7 +104,7 @@ resource "null_resource" "confirm_direct_link_gateway_creation" {
 
   provisioner "local-exec" {
     working_dir = "${path.module}/bin/${local.os}"
-    interpreter = local.is_windows ? ["PowerShell", "-Command"] : ["/bin/bash" ,"-c"]
+    interpreter = local.is_windows ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
 
     command = "./ibm-manage-dl-gateway approve-creation -api-key=$API_KEY -gateway-id=$GATEWAY_ID -resource-group-id=$RESOURCE_GROUP -global-routing=$GLOBAL_ROUTING -metered=$METERED -connection-mode=$CONN_MODE"
     environment = {
@@ -134,7 +134,7 @@ resource "null_resource" "confirm_direct_link_gateway_deletion" {
   provisioner "local-exec" {
     when        = destroy
     working_dir = "${path.module}/bin/${self.triggers.os}"
-    interpreter = "${self.triggers.is_windows}" ? ["PowerShell", "-Command"] : ["/bin/bash" ,"-c"]
+    interpreter = "${self.triggers.is_windows}" ? ["PowerShell", "-Command"] : ["/bin/bash", "-c"]
 
     command = "./ibm-manage-dl-gateway approve-deletion -api-key=${self.triggers.api_key} -gateway-name=${self.triggers.gw_name}"
   }
@@ -147,15 +147,15 @@ resource "equinix_network_bgp" "this" {
     null_resource.confirm_direct_link_gateway_creation
   ]
 
-  connection_id      = module.equinix-fabric-connection.primary_connection.uuid
-  local_ip_address   = local.ibm_dl_gateway.bgp_cer_cidr
-  local_asn          = local.ibm_dl_gateway.bgp_asn
-  remote_ip_address  = split("/", local.ibm_dl_gateway.bgp_ibm_cidr)[0]
-  remote_asn         = local.ibm_dl_gateway.bgp_ibm_asn
-  //TODO add authentication_key
+  connection_id     = module.equinix-fabric-connection.primary_connection.uuid
+  local_ip_address  = local.ibm_dl_gateway.bgp_cer_cidr
+  local_asn         = local.ibm_dl_gateway.bgp_asn
+  remote_ip_address = split("/", local.ibm_dl_gateway.bgp_ibm_cidr)[0]
+  remote_asn        = local.ibm_dl_gateway.bgp_ibm_asn
+  //TODO authentication_key
 }
 
-resource "ibm_dl_virtual_connection" "this"{
+resource "ibm_dl_virtual_connection" "this" {
   count = var.ibm_dl_connection_mode == "direct" && var.ibm_create_dl_virtual_connection ? 1 : 0
 
   depends_on = [
