@@ -10,14 +10,16 @@ locals {
   ibm_resource_group_id   = var.ibm_create_resource_group ? ibm_resource_group.this[0].id : data.ibm_resource_group.this[0].id
 
   is_windows = substr(pathexpand("~"), 0, 1) == "/" ? false : true // if directories use "/" for root then OS linux based, otherwise set windows
-  os         = data.external.os.result.os
+  os         = local.is_windows ? "win" : data.external.os[0].result.os
 
   connection_name = coalesce(var.fabric_connection_name, upper(format("IBM-%s-%s", coalesce(var.fabric_destination_metro_code, substr(var.fabric_destination_metro_name, 0, 2)), random_string.this.result)))
 }
 
 data "external" "os" {
+  count = local.is_windows ? 0 : 1
+
   working_dir = "${path.module}/scripts/"
-  program     = local.is_windows ? ["{\"os\": \"win\"}"] : ["/bin/bash", "check_linux_os.sh"]
+  program = [ "/bin/bash", "check_linux_os.sh"]
 }
 
 data "ibm_resource_group" "this" {
